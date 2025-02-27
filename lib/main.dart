@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_finder/views/homeScreen.dart';
+import 'package:recipe_finder/navigation_controller.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: NavigationMenu(),
     );
   }
 }

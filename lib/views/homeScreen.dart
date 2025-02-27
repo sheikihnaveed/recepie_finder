@@ -4,6 +4,8 @@ import 'package:recipe_finder/models/getRecipe.dart';
 import 'package:recipe_finder/network/apiCall.dart';
 import 'package:recipe_finder/utilities/constants.dart';
 import 'package:recipe_finder/views/detailedView.dart';
+
+import '../navigation_controller.dart';
 // import 'package:connectivity/connectivity.dart';
 
 

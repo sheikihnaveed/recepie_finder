@@ -5,7 +5,7 @@ import 'package:recipe_finder/network/apiCall.dart';
 import 'package:recipe_finder/utilities/constants.dart';
 import 'package:recipe_finder/views/detailedView.dart';
 
-import '../navigation_controller.dart';
+import '../controller/auth_controller.dart';
 // import 'package:connectivity/connectivity.dart';
 
 
@@ -16,9 +16,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   List<GetRecipe> recipe = [];
   late String searchText;
+
 
   bool isLoading = false;
   String? errorMessage;
@@ -55,14 +56,28 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authController = AuthController();
+    final user = authController.currentUser;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Recipe Finder'),
+        title: const Text('Home'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              // await authController.logout();
+              // Navigator.of(context).pushReplacement(
+              //   MaterialPageRoute(builder: (_) => const AuthW()),
+              // );
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            const SizedBox(height: 20),
             TextField(
               controller: _searchController,
               decoration: InputDecoration(

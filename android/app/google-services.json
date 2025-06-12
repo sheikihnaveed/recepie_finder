@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "1069624688864",
+    "firebase_url": "https://shoppingqr-d3dd3-default-rtdb.firebaseio.com",
+    "project_id": "shoppingqr-d3dd3",
+    "storage_bucket": "shoppingqr-d3dd3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1069624688864:android:50808da8d24f4827e61085",
+        "android_client_info": {
+          "package_name": "com.example.flutter_firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1069624688864-3ke1cfthfc3pp4p59kns7kmjd40hvh6q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6N8Q3keU_AU82UpfjqLMVWCTHlmMfB_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1069624688864-2r12bs8hc567tl138mfd1cfs0i0ip9p9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1069624688864:android:a3320e3a6ae48022e61085",
+        "android_client_info": {
+          "package_name": "com.example.recipe_finder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1069624688864-3ke1cfthfc3pp4p59kns7kmjd40hvh6q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6N8Q3keU_AU82UpfjqLMVWCTHlmMfB_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1069624688864-2r12bs8hc567tl138mfd1cfs0i0ip9p9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1069624688864:android:e87935e5534a7dbae61085",
+        "android_client_info": {
+          "package_name": "com.example.thinkle_AdminQr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1069624688864-3ke1cfthfc3pp4p59kns7kmjd40hvh6q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6N8Q3keU_AU82UpfjqLMVWCTHlmMfB_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1069624688864-2r12bs8hc567tl138mfd1cfs0i0ip9p9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

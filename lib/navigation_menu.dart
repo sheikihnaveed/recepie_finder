@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipe_finder/utilities/colors.dart';
+import 'package:recipe_finder/views/accounts/setting.dart';
+import 'package:recipe_finder/views/disease/Disease.dart';
+import 'package:recipe_finder/views/disease/diseaseDetail.dart';
 import 'package:recipe_finder/views/homeScreen.dart';
+import 'package:recipe_finder/views/saved/saved.dart';
 
 class NavigationMenu extends StatelessWidget {
   const NavigationMenu({super.key});
@@ -17,7 +21,7 @@ class NavigationMenu extends StatelessWidget {
           indicatorColor: CColors.softGrey, // Selected item background
           // overlayColor: WidgetStateProperty.all(Colors.blue.withOpacity(0.2)), // Ripple effect
           iconTheme: WidgetStateProperty.all(
-             IconThemeData(color: CColors.primary), // White icon color
+            const IconThemeData(color: CColors.primary), // White icon color
           ),
           labelTextStyle: WidgetStateProperty.all(
             Theme.of(context).textTheme.labelLarge!,
@@ -46,7 +50,7 @@ class NavigationMenu extends StatelessWidget {
               ),
               NavigationDestination(
                 icon: Icon(Icons.settings),
-                label: "Settings",
+                label: "Account",
               ),
             ],
           ),
@@ -55,17 +59,15 @@ class NavigationMenu extends StatelessWidget {
       body: Obx(() => controller.screen[controller.selectedIndex.value]),
     );
   }
-
-
 }
 
 class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
 
   final screen = [
-     HomeScreen(), HomeScreen(), HomeScreen(), HomeScreen(),
-    // const PaymentHistoryScreen(),
-    // const HelpScreen(),
-    // const AccountsScreen()
+    HomeScreen(),
+    SavedRecipesScreen(),
+    Disease(),
+    const Setting(),
   ];
 }

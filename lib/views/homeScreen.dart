@@ -1,63 +1,20 @@
-
+// lib/views/home_screen.dart
 import 'package:flutter/material.dart';
-import 'package:recipe_finder/models/getRecipe.dart';
-import 'package:recipe_finder/network/apiCall.dart';
-import 'package:recipe_finder/utilities/constants.dart';
+import 'package:get/get.dart';
+import 'package:recipe_finder/controller/auth_controller.dart';
 import 'package:recipe_finder/views/detailedView.dart';
 
-import '../controller/auth_controller.dart';
-// import 'package:connectivity/connectivity.dart';
+import '../controller/homeController.dart';
+import '../main.dart';
 
-
-class HomeScreen extends StatefulWidget {
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-
-  final TextEditingController _searchController = TextEditingController();
-  List<GetRecipe> recipe = [];
-  late String searchText;
-
-
-  bool isLoading = false;
-  String? errorMessage;
-
-  apicall ap = apicall();
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  Future<void> getData(String url) async {
-
-    setState(() {
-      isLoading = true;
-      errorMessage = null;
-    });
-
-
-    try {
-      var response = await ap.getData(url);
-      setState(() {
-        recipe = getRecipeFromJson(response);
-        isLoading = false;
-      });
-    } catch (error) {
-      setState(() {
-        errorMessage = 'Error fetching data';
-        isLoading = false;
-      });
-    }
-  }
+class HomeScreen extends StatelessWidget {
+  final HomeController controller = Get.put(HomeController());
+  final AuthController authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
-    final authController = AuthController();
     final user = authController.currentUser;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
@@ -65,10 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
-              // await authController.logout();
-              // Navigator.of(context).pushReplacement(
-              //   MaterialPageRoute(builder: (_) => const AuthW()),
-              // );
+              await authController.logout();
+              Get.offAll(const AuthWrapper());
             },
           ),
         ],
@@ -79,94 +34,82 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             const SizedBox(height: 20),
             TextField(
-              controller: _searchController,
+              controller: controller.searchController,
               decoration: InputDecoration(
                 hintText: 'Enter ingredients',
                 helperText: "E.g Banana, Apple, Egg, Bread etc",
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.search),
-                  onPressed: () {
-                    searchText = _searchController.text;
-                    var url = '$findByIngredients?ingredients=$searchText&apiKey=$apiKey';
-                    getData(url);
-                  },
+                  onPressed: controller.fetchRecipes,
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                contentPadding: const EdgeInsets.symmetric(
+                    vertical: 12.0, horizontal: 16.0),
               ),
             ),
             const SizedBox(height: 16.0),
-            if (isLoading)
-              const CircularProgressIndicator()
-            else if (errorMessage != null)
-              Text(errorMessage!)
-            else
-              Expanded(
-                child: recipe.isEmpty
-                    ? const Center(child: Text('Nothing to show.'))
-                    : ListView.builder(
-                  itemCount: recipe.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => detailedView(
-                              recipeID: recipe[index].id,
-                              ImgUrl: recipe[index].image,
-                              title: recipe[index].title,
-                            ),
-                          ),
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10),
-                        child: Card(
-                          child: Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Container(
+            Obx(() {
+              if (controller.isLoading.value) {
+                return const CircularProgressIndicator();
+              } else if (controller.errorMessage.value != null) {
+                return Text(controller.errorMessage.value!);
+              } else if (controller.recipeList.isEmpty) {
+                return const Expanded(
+                  child: Center(child: Text('Nothing to show.')),
+                );
+              } else {
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: controller.recipeList.length,
+                    itemBuilder: (context, index) {
+                      final recipe = controller.recipeList[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Get.to(() => DetailedView(
+                            recipeID: recipe.id,
+                            ImgUrl: recipe.image,
+                            title: recipe.title, isOffline: false,
+                          ));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Card(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
                                   height: 150,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: NetworkImage(
-                                        recipe[index].image,
-                                      ),
+                                      image: NetworkImage(recipe.image),
                                       fit: BoxFit.cover,
                                     ),
-                                    borderRadius:
-                                    const BorderRadius.only(
-                                        topLeft:
-                                        Radius.circular(10),
-                                        topRight:
-                                        Radius.circular(10)),
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Text(
-                                  '${recipe[index].title.toUpperCase()}.',
+                                Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Text(
+                                    recipe.title.toUpperCase(),
+                                    style: const TextStyle(
+                                        fontFamily: "Poppins-Regular"),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                ),
-              ),
+                      );
+                    },
+                  ),
+                );
+              }
+            }),
           ],
         ),
       ),

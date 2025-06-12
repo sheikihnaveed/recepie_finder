@@ -1,41 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_finder/models/getAnalyzedInstructions.dart';
 
-
-class Instructions extends StatefulWidget {
+class Instructions extends StatelessWidget {
+  final List<GetAnalyzedInstructions>? onlineData;
+  final List<String>? offlineData;
+  final bool isOffline;
 
   const Instructions({
     super.key,
-    required this.data,
+    this.onlineData,
+    this.offlineData,
+    required this.isOffline,
   });
 
-  final List<GetAnalyzedInstructions> data;
-
-  @override
-  State<Instructions> createState() => _InstructionsState();
-}
-
-class _InstructionsState extends State<Instructions> {
   @override
   Widget build(BuildContext context) {
+    final steps = isOffline
+        ? offlineData ?? []
+        : (onlineData != null && onlineData!.isNotEmpty
+        ? onlineData![0].steps
+        : []);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const Text(
-          'Instruction to Prepare:',
+          'Instructions to Prepare:',
           style: TextStyle(
             fontSize: 20.0,
             fontWeight: FontWeight.bold,
+            fontFamily: "Poppins-Regular",
           ),
         ),
-        widget.data.isEmpty ? const Center(child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text("Currently no Instruction found"),
-        ),) : ListView.builder(
-          // scrollDirection: Axis.horizontal,
+        const SizedBox(height: 8),
+        steps.isEmpty
+            ? const Center(
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              "Currently no instructions found",
+              style: TextStyle(fontFamily: "Poppins-Regular"),
+            ),
+          ),
+        )
+            : ListView.builder(
           shrinkWrap: true,
-          itemCount: widget.data[0].steps.length,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: steps.length,
           itemBuilder: (context, index) {
+            final stepText = isOffline
+                ? steps[index]
+                : steps[index].step;
+            final stepNumber = isOffline
+                ? 'Step - ${index + 1}'
+                : 'Step - ${steps[index].number}';
+
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
@@ -43,19 +62,19 @@ class _InstructionsState extends State<Instructions> {
                 child: Card(
                   child: ListTile(
                     title: Text(
-                      'Step - ${widget.data[0].steps[index].number.toString()}',
-                      style:
-                      const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                    ),
-                    subtitle: Text(
-                      widget.data[0].steps[index].step,
+                      stepNumber,
                       style: const TextStyle(
-                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        fontFamily: "Poppins-Regular",
                       ),
                     ),
-                    onTap: () {
-                      // Handle tap on list item
-                    },
+                    subtitle: Text(
+                      stepText,
+                      style: const TextStyle(
+                        fontFamily: "Poppins-Regular",
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -66,4 +85,3 @@ class _InstructionsState extends State<Instructions> {
     );
   }
 }
-

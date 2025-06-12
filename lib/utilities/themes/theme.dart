@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipe_finder/utilities/themes/custom_themes/cardTheme.dart';
 
 import '../colors.dart';
 import 'custom_themes/appbar_theme.dart';
@@ -20,6 +21,7 @@ class AAppTheme {
     elevatedButtonTheme: TElevatedButtonTheme.lightElevatedButtonTheme,
     inputDecorationTheme: TTextFormFieldTheme.lightInputDecorationTheme,
     outlinedButtonTheme: TOutlinedButtonTheme.lightOutlinedButtonTheme,
+    cardTheme: TCardTheme.lightCheckboxTheme,
     // checkboxTheme: TCheckboxTheme.lightCheckboxTheme,lightCheckboxTheme
   );
 }

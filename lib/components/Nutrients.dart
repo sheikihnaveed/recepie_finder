@@ -2,66 +2,76 @@ import 'package:flutter/material.dart';
 import 'package:recipe_finder/components/progress.dart';
 import 'package:recipe_finder/models/getNutrients.dart';
 
-class Nutrients extends StatefulWidget {
+class Nutrients extends StatelessWidget {
+  final List<Nutrient>? onlineData;
+  final List<String>? offlineData;
+  final bool isOffline;
 
   const Nutrients({
     super.key,
-    required this.data,
+    this.onlineData,
+    this.offlineData,
+    required this.isOffline,
   });
 
-  final List<Nutrient> data;
-
-  @override
-  State<Nutrients> createState() => _NutrientsState();
-}
-
-class _NutrientsState extends State<Nutrients> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const Text(
-            'Nutritions:',
-            style: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-            ),
+    final items = isOffline ? offlineData ?? [] : onlineData ?? [];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Nutritions:',
+          style: TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: "Poppins-Regular",
           ),
-          widget.data.isEmpty ? const loading() : SizedBox(
-            height: 100,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-              itemCount: widget.data.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    width: 250,
-                    child: Card(
-                      child: ListTile(
-                        title: Text(
-                          widget.data[index].name,
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+        ),
+        const SizedBox(height: 8),
+        items.isEmpty
+            ? const loading()
+            : SizedBox(
+          height: 100,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: 250,
+                  child: Card(
+                    child: ListTile(
+                      title: Text(
+                        isOffline
+                            ? items[index] as String
+                            : (items[index] as Nutrient).name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "Poppins-Regular",
+                          fontSize: 14,
                         ),
-                        subtitle: Text(
-                          '${widget.data[index].amount} - ${widget.data[index].unit}',
-                          style: const TextStyle(fontStyle: FontStyle.normal, ),
+                      ),
+                      subtitle: Text(
+                        isOffline
+                            ? ""
+                            : '${(items[index] as Nutrient).amount} ${(items[index] as Nutrient).unit}',
+                        style: const TextStyle(
+                          fontStyle: FontStyle.normal,
+                          fontFamily: "Poppins-Regular",
                         ),
-                        onTap: () {
-                          // Handle tap on list item
-                        },
                       ),
                     ),
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

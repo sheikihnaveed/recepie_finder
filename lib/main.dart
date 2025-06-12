@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:recipe_finder/utilities/themes/theme.dart';
 import 'package:recipe_finder/views/homeScreen.dart';
+import 'controller/IsarService.dart';
 import 'controller/shared_prefs.dart';
 import 'navigation_menu.dart';
 import 'views/auth/login_screen.dart';
@@ -9,6 +11,7 @@ import 'views/auth/register_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await IsarService().db;
   await Firebase.initializeApp();
 
 
@@ -24,9 +27,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       theme: AAppTheme.lightTheme,
-      home: isLoggedIn ? HomeScreen() : const AuthWrapper(),
+      home: isLoggedIn ? const NavigationMenu() : const AuthWrapper(),
     );
   }
 }

@@ -7,6 +7,11 @@ class TAppBarTheme {
     elevation: 0,
     surfaceTintColor: Colors.transparent,
     color: CColors.appBarPrimary,
-    titleTextStyle: TextStyle(fontSize: 20.0, height: 1, fontFamily: 'Poppins-Bold', color: CColors.textPrimary),
+    titleTextStyle: TextStyle(
+      color: CColors.success,
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      fontFamily: "Poppins-Regular",
+    ),
   );
 }
